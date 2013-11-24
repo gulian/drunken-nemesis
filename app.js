@@ -61,7 +61,7 @@ var accountSchema = mongoose.Schema({
     name: String,
     bank: String,
     initialBalance : Number,
-
+    operations : Array,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'

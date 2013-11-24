@@ -10,7 +10,7 @@ exports.retreive = function(req, res){
             res.json(500, error);
         } else {
             d(accounts);
-            res.json(200, accounts);
+            res.json(200, request === null ? accounts : accounts[0] );
         }
     });
 };
