@@ -1,5 +1,19 @@
-extends layout
+doctype 5
+html(ng-app='drunkennemesis')
+  head
+    title='Drunken-Nemesis'
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
 
-block content
-  h1= title
-  p Welcome to #{title}
+    div(ng-view='')
+
+    script(src='/javascripts/vendors/angular.js')
+    script(src='/javascripts/vendors/angular.route.js')
+    script(src='/javascripts/vendors/angular.resource.js')
+
+    script(src='/javascripts/drunkennemesis.js')
+
+    script(src='/javascripts/services/Account.js')
+
+    script(src='/javascripts/controllers/accountsController.js')
+    script(src='/javascripts/controllers/accountDetailsController.js')

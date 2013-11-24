@@ -1,6 +1,7 @@
-angular.module('drunkennemesis', ['ngRoute']).config(['$routeProvider', function($routeProvider, $rootScope) {
+var drunkenNemesis = angular.module('drunkennemesis', ['ngRoute','drunkenNemesisService']).config(['$routeProvider', function($routeProvider, $rootScope) {
     $routeProvider.
-        when('/',           {templateUrl: '/partials/accounts.html'}).
-        when('/settings/',  {templateUrl: '/partials/settings.html'}).
-        otherwise({redirectTo: '/'});
+        when('/accounts/',          {templateUrl: '/partials/accounts.html'         }).
+        when('/accounts/:account',  {templateUrl: '/partials/accountDetails.html'   }).
+        when('/settings/',          {templateUrl: '/partials/settings.html'         }).
+        otherwise({redirectTo: '/accounts'});
 }]);

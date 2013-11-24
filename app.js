@@ -5,10 +5,11 @@
 
 var express = require('express');
 var routes = require('./routes');
-var user = require('./routes/user');
+var account = require('./routes/account');
 var http = require('http');
 var path = require('path');
-
+var mongoose = require('mongoose');
+var debug = require('debug')('app.js')
 var app = express();
 
 // all environments
@@ -31,9 +32,45 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+var mongo_url = process.env.MONGOD || 'mongodb://localhost/drunken-nemesis',
+    database  = mongoose.connect(mongo_url, function(error) {
+        if (error) {
+            debug(error);
+            process.kill();
+        }
+        http.createServer(app).listen(app.get('port'), function() {
+            debug('connected to %s', mongo_url);
+        });
+    });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+app.all('*', function(req, res, n) {
+    req.mongoose = mongoose;
+    n();
 });
+
+app.get('/', routes.index);
+
+app.post(   '/account'     , account.create);
+app.get(    '/account/:id' , account.retreive);
+app.get(    '/account'     , account.retreive);
+app.put(    '/account/:id' , account.update);
+app.delete( '/account/:id' , account.delete);
+
+var accountSchema = mongoose.Schema({
+
+    name: String,
+    bank: String,
+    initialBalance : Number,
+
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    }
+
+});
+
+mongoose.model('account', accountSchema);

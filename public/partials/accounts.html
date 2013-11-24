@@ -1,1 +1,9 @@
-<h3>Accounts</h3>
+<div ng-controller=accountsController>
+    <h3>Accounts</h3>
+    <ul>
+        <li ng-repeat="account in accounts">
+           <p>{{account.bank}} - {{account.name}} : {{account.initialBalance}}</p>
+           <a ng-href='#/accounts/{{account._id}}'>operations</a>
+        </li>
+    </ul>
+</div>
