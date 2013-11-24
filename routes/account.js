@@ -9,6 +9,7 @@ exports.retreive = function(req, res){
     Account
         .find(request)
         .sort({created: -1})
+        .populate('operations')
         .exec(
             function(error, accounts){
                 // d(accounts);
@@ -18,22 +19,13 @@ exports.retreive = function(req, res){
                 } else if(request === null || !accounts.length){
                     return res.json(200, accounts);
                 }
-                d("only one account has been requested");
                 var account = accounts[0];
-                d("requesting operations for %s",account._id);
                 Operation.find({ _account : account._id}, function(error, operations){
-                    // d(operations);
                     if(error){
                         d(error);
                         res.json(500, error);
                     } else {
-                        d(account);
-                        d(operations);
-                        for(var i in operations){
-                            account.operations.push(operations[i]);
-                        }
-                        // account.operations.populate(operations) ;
-                        d(account);
+                        account.operations = operations;
                         res.json(200, account);
                     }
                 });

@@ -1,5 +1,9 @@
 <div ng-controller=accountDetailsController>
     <h3>Account Operation <small>{{account.name}} - {{account.bank}}</small> </h3>
-    <ul><li ng-repeat="operation in account.operations">{{operation}}</li></ul>
+    <ul>
+        <li ng-repeat="operation in account.operations | orderBy:'-created'">
+            {{operation.created | date:"dd/MM/yyyy HH:mm"}} - {{operation.name}} : {{operation.amount}}
+        </li>
+    </ul>
     <button ng-click="newOperation()">New</button>
 </div>

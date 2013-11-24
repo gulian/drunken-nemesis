@@ -6,13 +6,13 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
 
     $scope.newOperation = function(){
         var debug = {
-            id: Math.random(),
             name : "Operation test",
-            amount: Math.random()*10,
+            amount: Math.random()*10 - 5 ,
             _account : $scope.account._id
         };
-        Operation.post(debug) ;
-        $scope.account.operations.push(debug);
+        Operation.post(debug,function(operation){
+            $scope.account.operations.push(operation);
+        });
     };
 
 });
