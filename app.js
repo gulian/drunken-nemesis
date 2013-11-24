@@ -6,6 +6,7 @@
 var express = require('express');
 var routes = require('./routes');
 var account = require('./routes/account');
+var operation = require('./routes/operation');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
@@ -61,7 +62,12 @@ var accountSchema = mongoose.Schema({
     name: String,
     bank: String,
     initialBalance : Number,
-    operations : Array,
+    operations : [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'operation'
+        }
+    ],
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
@@ -74,3 +80,30 @@ var accountSchema = mongoose.Schema({
 });
 
 mongoose.model('account', accountSchema);
+
+app.post(   '/operation'     , operation.create);
+app.get(    '/operation/:id' , operation.retreive);
+app.get(    '/operation'     , operation.retreive);
+app.put(    '/operation/:id' , operation.update);
+app.delete( '/operation/:id' , operation.delete);
+
+var operationSchema = mongoose.Schema({
+
+    name : String,
+    amount : Number,
+    user : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    _account: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'account'
+    },
+
+});
+
+mongoose.model('operation', operationSchema);

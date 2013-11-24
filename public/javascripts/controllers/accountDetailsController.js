@@ -5,15 +5,14 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
     });
 
     $scope.newOperation = function(){
-        console.log($scope.account );
-        // $scope.account.operations.push(
-        var test = {
+        var debug = {
             id: Math.random(),
-            name : Math.random(),
-            amount: Math.random()*10
+            name : "Operation test",
+            amount: Math.random()*10,
+            _account : $scope.account._id
         };
-        Operation.put(test) ;
-        // );
+        Operation.post(debug) ;
+        $scope.account.operations.push(debug);
     };
 
 });

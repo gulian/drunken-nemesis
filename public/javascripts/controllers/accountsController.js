@@ -2,6 +2,10 @@ angular.module('drunkennemesis').controller('accountsController', function ($sco
 
     $scope.accounts = Account.query() ;
 
-    // Account.post({name:'Compte courant', bank:'SG', initialBalance: Math.floor(Math.random()*100)});
+    $scope.newAccount = function(){
+        var debug = {name:'Compte courant', bank:'SG', initialBalance: Math.floor(Math.random()*100)};
+        Account.post(debug);
+        $scope.accounts.push(debug);
+    };
 
 });

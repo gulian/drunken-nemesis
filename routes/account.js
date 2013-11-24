@@ -1,18 +1,45 @@
-var d = require('debug')('account.js')
+var d = require('debug')('account.js');
 
 exports.retreive = function(req, res){
 
-    var request = req.params.id ? { _id : req.params.id } : null ;
+    var Account     = req.mongoose.models.account,
+        Operation   = req.mongoose.models.operation,
+        request     = req.params.id ? { _id : req.params.id } : null ;
 
-    req.mongoose.models.account.find(request).sort({created: -1}).exec(function(error, accounts){
-        if(error){
-            d(error);
-            res.json(500, error);
-        } else {
-            d(accounts);
-            res.json(200, request === null ? accounts : accounts[0] );
-        }
-    });
+    Account
+        .find(request)
+        .sort({created: -1})
+        .exec(
+            function(error, accounts){
+                // d(accounts);
+                if(error){
+                    d(error);
+                    return res.json(500, error);
+                } else if(request === null || !accounts.length){
+                    return res.json(200, accounts);
+                }
+                d("only one account has been requested");
+                var account = accounts[0];
+                d("requesting operations for %s",account._id);
+                Operation.find({ _account : account._id}, function(error, operations){
+                    // d(operations);
+                    if(error){
+                        d(error);
+                        res.json(500, error);
+                    } else {
+                        d(account);
+                        d(operations);
+                        for(var i in operations){
+                            account.operations.push(operations[i]);
+                        }
+                        // account.operations.populate(operations) ;
+                        d(account);
+                        res.json(200, account);
+                    }
+                });
+            }
+        );
+
 };
 
 exports.create = function(req, res){

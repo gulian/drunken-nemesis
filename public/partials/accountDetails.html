@@ -1,5 +1,5 @@
 <div ng-controller=accountDetailsController>
     <h3>Account Operation <small>{{account.name}} - {{account.bank}}</small> </h3>
-    <ul><li ng-repeat="operation in account.operations">{{operation|json}}</li></ul>
+    <ul><li ng-repeat="operation in account.operations">{{operation}}</li></ul>
     <button ng-click="newOperation()">New</button>
 </div>

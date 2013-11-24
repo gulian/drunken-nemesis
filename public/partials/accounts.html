@@ -1,5 +1,6 @@
 <div ng-controller=accountsController>
     <h3>Accounts</h3>
+    <button ng-click="newAccount()">new</button>
     <ul>
         <li ng-repeat="account in accounts">
            <p>{{account.bank}} - {{account.name}} : {{account.initialBalance}}</p>
