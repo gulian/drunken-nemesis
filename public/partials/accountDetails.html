@@ -1,46 +1,61 @@
 <div ng-controller=accountDetailsController>
 
-    <h2>{{account.name}}  <small>{{account.bank}} </small>
-    </h2>
+    <h2>{{account.name}}  <small>{{account.bank}} </small></h2>
 
     <table class="table">
         <tbody>
             <tr>
             <td>Forecast balance</td>
-            <td>{{balance | currency:'€'}}</td>
+            <td>{{forecastBalance | currency:'€'}}</td>
             </tr>
             <tr>
             <td>Current balance</td>
-            <td>{{forecastBalance | currency:'€'}}</td>
+            <td>{{balance | currency:'€'}}</td>
             </tr>
         </tbody>
     </table>
 
-
-
-   <!--  <h3>Forecast balance : {{balance | currency:'€'}}</h3>
-    <h3>Current balance : {{forecastBalance | currency:'€'}}</h3>
- -->
-
     <button class="btn" ng-click="newOperation()">New operation</button>
-    <button disabled class="btn btn-success">Check operation</button>
-    <button disabled class="btn btn-warning">Uncheck operation</button>
-    <button disabled class="btn btn-danger">Delete operation</button>
+    <button ng-disabled='selectedOperationsCount <= 0' ng-click='checkSelected()' class="btn btn-success">
+        Check <ng-pluralize count="selectedOperationsCount"
+            when="{
+                '0'    : ' operation',
+                'one'  : ' operation',
+                'other': ' operations'
+            }"></ng-pluralize>
+    </button>
+    <button ng-disabled='selectedOperationsCount <= 0' ng-click='uncheckSelected()' class="btn btn-warning">
+        Uncheck <ng-pluralize count="selectedOperationsCount"
+            when="{
+                '0'    : ' operation',
+                'one'  : ' operation',
+                'other': ' operations'
+            }"></ng-pluralize></button>
+    <button ng-disabled='selectedOperationsCount <= 0' ng-click='deleteSelected()' class="btn btn-danger">
+        Delete <ng-pluralize count="selectedOperationsCount"
+            when="{
+                '0'    : ' operation',
+                'one'  : ' operation',
+                'other': ' operations'
+            }"></ng-pluralize></button>
 
     <hr>
 
     <table class="table table-hover">
         <thead>
             <tr>
-                <th><input type="checkbox"></th>
+                <th><input type="checkbox" ng-model='allSelected' ng-change='updateSelected(true)'> ({{selectedOperationsCount}})</th>
                 <th>Date</th>
                 <th>Label</th>
                 <th>Amount</th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="operation in account.operations | orderBy:'-created'" ng-class=" !operation.checked ? 'warning' : operation.amount < 0 ? 'danger' : 'success' ">
-                <td></td>
+            <tr ng-repeat="operation in account.operations | orderBy:'-created'"
+                ng-class=" !operation.checked ? 'warning' : operation.amount < 0 ? 'danger' : 'success' "
+                ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)">
+
+                <td><input type="checkbox" ng-model='operation.selected' disabled ng-change='updateSelected(false, operation.selected)'></td>
                 <td>{{operation.created | date:"dd/MM/yyyy"}}</td>
                 <td>{{operation.name}}</td>
                 <td style="text-align:right">{{operation.amount | currency:'€' }} <input type="checkbox" ng-model='operation.checked' ng-click='update(operation)'></td>
