@@ -1,9 +1,49 @@
 <div ng-controller=accountDetailsController>
-    <h3>Account Operation <small>{{account.name}} - {{account.bank}}</small> </h3>
-    <ul>
-        <li ng-repeat="operation in account.operations | orderBy:'-created'">
-            {{operation.created | date:"dd/MM/yyyy HH:mm"}} - {{operation.name}} : {{operation.amount}}
-        </li>
-    </ul>
-    <button ng-click="newOperation()">New</button>
+
+    <h2>{{account.name}}  <small>{{account.bank}} </small>
+    </h2>
+
+    <table class="table">
+        <tbody>
+            <tr>
+            <td>Forecast balance</td>
+            <td>{{balance | currency:'€'}}</td>
+            </tr>
+            <tr>
+            <td>Current balance</td>
+            <td>{{pbalance | currency:'€'}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+   <!--  <h3>Forecast balance : {{balance | currency:'€'}}</h3>
+    <h3>Current balance : {{pbalance | currency:'€'}}</h3>
+ -->
+
+    <button class="btn" ng-click="newOperation()">New operation</button>
+    <button disabled class="btn btn-success">Valid operation</button>
+    <button disabled class="btn btn-danger">Delete operation</button>
+
+    <hr>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>Date</th>
+                <th>Label</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="operation in account.operations | orderBy:'-created'" ng-class=" !operation.checked ? 'warning' : operation.amount < 0 ? 'danger' : 'success' ">
+                <td><input type="checkbox" ng-model='operation.checked'></td>
+                <td>{{operation.created | date:"dd/MM/yyyy"}}</td>
+                <td>{{operation.name}}</td>
+                <td style="text-align:right">{{operation.amount | currency:'€' }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
