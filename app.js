@@ -85,7 +85,7 @@ app.post(   '/operation'     , operation.create);
 app.get(    '/operation/:id' , operation.retreive);
 app.get(    '/operation'     , operation.retreive);
 app.put(    '/operation'     , operation.update);
-app.delete( '/operation'     , operation.delete);
+app.delete( '/operation/:id'     , operation.delete);
 
 var operationSchema = mongoose.Schema({
 

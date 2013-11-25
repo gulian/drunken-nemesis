@@ -25,16 +25,22 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
     };
 
     $scope.newOperation = function(){
-        var debug = {
-            name : "Operation test",
-            amount: Math.random()*100 - 50 ,
+        $scope.newOperationIsInProgress = true ;
+        $scope.newOperation = {
+            name : "",
+            amount: 0 ,
+            created: new Date().toJSON().slice(0,10),
+            checked: false,
             _account : $scope.account._id
         };
+        return ;
         Operation.post(debug,function(operation){
             $scope.account.operations.push(operation);
             $scope.processBalance();
             $scope.processForecastBalance();
         });
+        $scope.selectedOperationsCount--;
+        $scope.allSelected = false ;
     };
 
     $scope.update = function (operation) {
@@ -43,7 +49,7 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         $scope.processForecastBalance();
     };
 
-    $scope.updateSelected = function(all, newState){
+    $scope.updateSelected = function(all, newState, $event){
         if(all){
             for(var i in $scope.account.operations){
                 $scope.account.operations[i].selected = $scope.allSelected;
@@ -57,7 +63,10 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
                 $scope.allSelected = false ;
             }
         }
-
+        if($event){
+            $event.stopPropagation();
+            $event.stopImmediatePropagation();
+        }
     };
 
     $scope.checkSelected = function(){
@@ -83,9 +92,18 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
     };
 
     $scope.deleteSelected = function(){
-
+        for(var i = 0 ; i < $scope.account.operations.length ; i++ ){
+            if($scope.account.operations[i].selected){
+                Operation.delete({
+                    operationId : $scope.account.operations[i]._id
+                });
+                $scope.account.operations.splice(i--, 1);
+                $scope.updateSelected(false, false);
+            }
+        }
+        $scope.processBalance();
+        $scope.processForecastBalance();
     };
-
 
 
 });
