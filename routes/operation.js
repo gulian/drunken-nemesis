@@ -34,17 +34,17 @@ exports.create = function(req, res){
 };
 
 exports.update = function(req, res){
-    req.mongoose.models.operation.findOne({ _id: req.params.id}, function (error, operation) {
+    req.mongoose.models.operation.findOne({ _id: req.body._id}, function (error, operation) {
         if(error){
             d(error);
             return res.send(500);
         }
 
-        operation.name = req.body.name ;
-        operation.bank = req.body.bank ;
-        operation.initialBalance = req.body.initialBalance ;
-
-        d(operation);
+        for(var attribute in req.body){
+            if(req.body.hasOwnProperty(attribute)){
+                operation[attribute] = req.body[attribute];
+            }
+        }
 
         operation.save(function(error){
             if(error){

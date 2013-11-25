@@ -4,12 +4,21 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         accountId : $routeParams.account
     }, function(){
         $scope.processBalance();
+        $scope.processForecastBalance();
     });
 
     $scope.processBalance =  function(){
         $scope.balance = 0 ;
         for(var i in $scope.account.operations){
-            $scope.balance += $scope.account.operations[i].amount;
+            if($scope.account.operations[i].checked){
+                $scope.balance += $scope.account.operations[i].amount;
+            }
+        }
+    };
+    $scope.processForecastBalance =  function(){
+        $scope.forecastBalance = 0 ;
+        for(var i in $scope.account.operations){
+            $scope.forecastBalance += $scope.account.operations[i].amount;
         }
     };
 
@@ -22,7 +31,15 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         Operation.post(debug,function(operation){
             $scope.account.operations.push(operation);
             $scope.processBalance();
+            $scope.processForecastBalance();
         });
     };
+
+    $scope.update = function (operation) {
+        // var operation = $scope.account.operations[$index];
+        Operation.put(operation);
+        $scope.processBalance();
+        $scope.processForecastBalance();
+    }
 
 });

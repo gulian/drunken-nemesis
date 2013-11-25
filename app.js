@@ -84,13 +84,17 @@ mongoose.model('account', accountSchema);
 app.post(   '/operation'     , operation.create);
 app.get(    '/operation/:id' , operation.retreive);
 app.get(    '/operation'     , operation.retreive);
-app.put(    '/operation/:id' , operation.update);
-app.delete( '/operation/:id' , operation.delete);
+app.put(    '/operation'     , operation.update);
+app.delete( '/operation'     , operation.delete);
 
 var operationSchema = mongoose.Schema({
 
     name : String,
     amount : Number,
+    checked: {
+        type: Boolean,
+        default: false
+    },
     user : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'

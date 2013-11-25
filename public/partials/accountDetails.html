@@ -11,7 +11,7 @@
             </tr>
             <tr>
             <td>Current balance</td>
-            <td>{{pbalance | currency:'€'}}</td>
+            <td>{{forecastBalance | currency:'€'}}</td>
             </tr>
         </tbody>
     </table>
@@ -19,11 +19,12 @@
 
 
    <!--  <h3>Forecast balance : {{balance | currency:'€'}}</h3>
-    <h3>Current balance : {{pbalance | currency:'€'}}</h3>
+    <h3>Current balance : {{forecastBalance | currency:'€'}}</h3>
  -->
 
     <button class="btn" ng-click="newOperation()">New operation</button>
-    <button disabled class="btn btn-success">Valid operation</button>
+    <button disabled class="btn btn-success">Check operation</button>
+    <button disabled class="btn btn-warning">Uncheck operation</button>
     <button disabled class="btn btn-danger">Delete operation</button>
 
     <hr>
@@ -39,10 +40,10 @@
         </thead>
         <tbody>
             <tr ng-repeat="operation in account.operations | orderBy:'-created'" ng-class=" !operation.checked ? 'warning' : operation.amount < 0 ? 'danger' : 'success' ">
-                <td><input type="checkbox" ng-model='operation.checked'></td>
+                <td></td>
                 <td>{{operation.created | date:"dd/MM/yyyy"}}</td>
                 <td>{{operation.name}}</td>
-                <td style="text-align:right">{{operation.amount | currency:'€' }}</td>
+                <td style="text-align:right">{{operation.amount | currency:'€' }} <input type="checkbox" ng-model='operation.checked' ng-click='update(operation)'></td>
             </tr>
         </tbody>
     </table>
