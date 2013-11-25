@@ -24,7 +24,7 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         }
     };
 
-    $scope.newOperation = function(){
+    $scope.startNewOperation = function(){
         $scope.newOperationIsInProgress = true ;
         $scope.newOperation = {
             name : "",
@@ -33,14 +33,17 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
             checked: false,
             _account : $scope.account._id
         };
-        return ;
-        Operation.post(debug,function(operation){
+    };
+
+    $scope.postNewOperation = function (){
+        Operation.post( $scope.newOperation,function(operation){
             $scope.account.operations.push(operation);
             $scope.processBalance();
             $scope.processForecastBalance();
         });
         $scope.selectedOperationsCount--;
         $scope.allSelected = false ;
+        $scope.newOperationIsInProgress = false ;
     };
 
     $scope.update = function (operation) {
