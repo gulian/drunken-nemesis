@@ -10,7 +10,7 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
     });
 
     $scope.processBalance =  function(){
-        $scope.balance = 0 ;
+        $scope.balance = $scope.account.initialBalance;
         for(var i in $scope.account.operations){
             if($scope.account.operations[i].checked){
                 $scope.balance += $scope.account.operations[i].amount;
@@ -18,7 +18,7 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         }
     };
     $scope.processForecastBalance =  function(){
-        $scope.forecastBalance = 0 ;
+        $scope.forecastBalance = $scope.account.initialBalance;
         for(var i in $scope.account.operations){
             $scope.forecastBalance += $scope.account.operations[i].amount;
         }
@@ -44,6 +44,12 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         $scope.selectedOperationsCount--;
         $scope.allSelected = false ;
         $scope.newOperationIsInProgress = false ;
+    };
+
+    $scope.saveAccount = function () {
+        Account.put($scope.account);
+        $scope.processBalance();
+        $scope.processForecastBalance();
     };
 
     $scope.update = function (operation) {

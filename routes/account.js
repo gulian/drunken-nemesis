@@ -46,7 +46,7 @@ exports.create = function(req, res){
 };
 
 exports.update = function(req, res){
-    req.mongoose.models.account.findOne({ _id: req.params.id}, function (error, account) {
+    req.mongoose.models.account.findOne({ _id: req.body._id}, function (error, account) {
         if(error){
             d(error);
             return res.send(500);

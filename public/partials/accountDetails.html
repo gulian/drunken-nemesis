@@ -5,6 +5,15 @@
     <table class="table">
         <tbody>
             <tr>
+                <td>Initial balance <button ng-show='editingInitialBalance' class="btn btn-sm btn-success pull-right" ng-click='editingInitialBalance = false ; saveAccount()'>Save</button></td>
+                <td ng-class="account.initialBalance < 0 ? 'text-danger' : 'text-success'" ng-dblclick="editingInitialBalance = true" ng-show='!editingInitialBalance'>
+                    {{account.initialBalance | currency:'€'}}
+                </td>
+                <td ng-dblclick="editingInitialBalance = true" ng-show='editingInitialBalance'>
+                    <input type="number" class="form-control input-sm" ng-model='account.initialBalance'>
+                </td>
+            </tr>
+            <tr>
             <td>Forecast balance</td>
             <td ng-class="forecastBalance < 0 ? 'text-danger' : 'text-success'" >{{forecastBalance | currency:'€'}}</td>
             </tr>
@@ -45,8 +54,8 @@
             <thead>
                 <tr>
                     <th style="width: 10px;"> </th>
-                    <th style="width: 20px;"><input type="checkbox" ng-model='allSelected' ng-change='updateSelected(true, false)'></th>
-                    <th>Date</th>
+                    <th style="width: 10px;"><input type="checkbox" ng-model='allSelected' ng-change='updateSelected(true, false)'></th>
+                    <th style="width: 10px;">Date</th>
                     <th>Label</th>
                     <th>Amount</th>
                     <th style="width: 40px;">Checked</th>
@@ -55,10 +64,10 @@
             <tbody>
                 <tr ng-show="newOperationIsInProgress">
                     <td ng-class="newOperation.amount < 0 ? 'danger' : 'success' "></td>
-                    <td><button ng-click='postNewOperation()' class="btn btn-primary">+</button></td>
-                    <td><input class="form-control" ng-model="newOperation.created" type="date"></td>
-                    <td><input class="form-control" ng-model="newOperation.name"    type="text"></td>
-                    <td ng-class="newOperation.amount < 0 ? 'text-danger' : 'text-success'" ><input class="form-control" ng-model="newOperation.amount"  type="number"></td>
+                    <td><button ng-click='postNewOperation()' class="btn btn-sm btn-primary">+</button></td>
+                    <td><input class="form-control input-sm" ng-model="newOperation.created" type="date"></td>
+                    <td><input class="form-control input-sm" ng-model="newOperation.name"    type="text"></td>
+                    <td ng-class="newOperation.amount < 0 ? 'text-danger' : 'text-success'" ><input class="form-control input-sm" ng-model="newOperation.amount"  type="number"></td>
                     <td class="text-center" ng-class=" !newOperation.checked ? 'warning' : 'default' " ><input ng-model="newOperation.checked" type="checkbox"></td>
                 </tr>
                 <tr ng-repeat="operation in account.operations | orderBy:'-created'" >

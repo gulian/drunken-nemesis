@@ -54,7 +54,7 @@ app.get('/', routes.index);
 app.post(   '/account'     , account.create);
 app.get(    '/account/:id' , account.retreive);
 app.get(    '/account'     , account.retreive);
-app.put(    '/account/:id' , account.update);
+app.put(    '/account' , account.update);
 app.delete( '/account/:id' , account.delete);
 
 var accountSchema = mongoose.Schema({
