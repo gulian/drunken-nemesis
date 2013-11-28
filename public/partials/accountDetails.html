@@ -1,96 +1,131 @@
-<div ng-controller=accountDetailsController>
+<div class="container">
+    <div class="row">
 
-    <h2>{{account.name}}  <small>{{account.bank}} </small></h2>
+        <div  class="col-xs-6 col-sm-3" id="sidebar" role="navigation" ng-controller="accountsController">
+            <h4>Accounts</h4>
+            <ul class="nav nav-stacked">
+                <li class="active" ng-repeat="account in accounts">
+                    <a ng-href='#/accounts/{{account._id}}'>
+                        {{account.bank}} <small>{{account.name}}</small><span class="label label-success pull-right">1</span>
+                    </a>
+                </li>
+            </ul>
+            <button class='btn btn-default btn-block' ng-click="newAccount()">+</button>
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <td>Initial balance <button ng-show='editingInitialBalance' class="btn btn-sm btn-success pull-right" ng-click='editingInitialBalance = false ; saveAccount()'>Save</button></td>
-                <td ng-class="account.initialBalance < 0 ? 'text-danger' : 'text-success'" ng-dblclick="editingInitialBalance = true" ng-show='!editingInitialBalance'>
-                    {{account.initialBalance | currency:'€'}}
-                </td>
-                <td ng-dblclick="editingInitialBalance = true" ng-show='editingInitialBalance'>
-                    <input type="number" class="form-control input-sm" ng-model='account.initialBalance'>
-                </td>
-            </tr>
-            <tr>
-            <td>Forecast balance</td>
-            <td ng-class="forecastBalance < 0 ? 'text-danger' : 'text-success'" >{{forecastBalance | currency:'€'}}</td>
-            </tr>
-            <tr>
-            <td>Current balance</td>
-            <td ng-class="balance < 0 ? 'text-danger' : 'text-success'" >{{balance | currency:'€'}}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div  class="col-xs-12 col-sm-9" ng-controller='accountDetailsController'>
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+                    Settings <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <!-- <li><a href="#">Save locally<a></li> -->
+                    <li><a ng-click="_delete($event)" href="#">Delete account</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">User settings</a></li>
+                </ul>
+            </div>
 
-    <button class="btn" ng-click="startNewOperation()" ng-disabled="newOperationIsInProgress">New operation</button>
-    <button ng-disabled='selectedOperationsCount <= 0' ng-click='checkSelected()' class="btn btn-success">
-        Check <span ng-show="selectedOperationsCount>0">{{selectedOperationsCount}}</span><ng-pluralize count="selectedOperationsCount"
-            when="{
-                '0'    : ' operation',
-                'one'  : ' operation',
-                'other': ' operations'
-            }"></ng-pluralize>
-    </button>
-    <button ng-disabled='selectedOperationsCount <= 0' ng-click='uncheckSelected()' class="btn btn-warning">
-        Uncheck <span ng-show="selectedOperationsCount>0">{{selectedOperationsCount}}</span><ng-pluralize count="selectedOperationsCount"
-            when="{
-                '0'    : ' operation',
-                'one'  : ' operation',
-                'other': ' operations'
-            }"></ng-pluralize></button>
-    <button ng-disabled='selectedOperationsCount <= 0' ng-click='deleteSelected()' class="btn btn-danger">
-        Delete <span ng-show="selectedOperationsCount>0">{{selectedOperationsCount}}</span><ng-pluralize count="selectedOperationsCount"
-            when="{
-                '0'    : ' operation',
-                'one'  : ' operation',
-                'other': ' operations'
-            }"></ng-pluralize></button>
+            <h2>{{account.name}}  <small>{{account.bank}} </small></h2>
 
-    <hr>
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th style="width: 10px;"> </th>
-                    <th style="width: 10px;"><input type="checkbox" ng-model='allSelected' ng-change='updateSelected(true, false)'></th>
-                    <th style="width: 10px;">Date</th>
-                    <th>Label</th>
-                    <th>Amount</th>
-                    <th style="width: 40px;">Checked</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-show="newOperationIsInProgress">
-                    <td ng-class="newOperation.amount < 0 ? 'danger' : 'success' "></td>
-                    <td><button ng-click='postNewOperation()' class="btn btn-sm btn-primary">+</button></td>
-                    <td><input class="form-control input-sm" ng-model="newOperation.created" type="date"></td>
-                    <td><input class="form-control input-sm" ng-model="newOperation.name"    type="text"></td>
-                    <td ng-class="newOperation.amount < 0 ? 'text-danger' : 'text-success'" ><input class="form-control input-sm" ng-model="newOperation.amount"  type="number"></td>
-                    <td class="text-center" ng-class=" !newOperation.checked ? 'warning' : 'default' " ><input ng-model="newOperation.checked" type="checkbox"></td>
-                </tr>
-                <tr ng-repeat="operation in account.operations | orderBy:'-created'" >
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Initial balance <button ng-show='editingInitialBalance' class="btn btn-sm btn-success pull-right" ng-click='editingInitialBalance = false ; saveAccount()'>Save</button></td>
+                        <td ng-class="account.initialBalance < 0 ? 'text-danger' : 'text-success'" ng-dblclick="editingInitialBalance = true" ng-show='!editingInitialBalance'>
+                            {{account.initialBalance | currency:'€'}}
+                        </td>
+                        <td ng-dblclick="editingInitialBalance = true" ng-show='editingInitialBalance'>
+                            <input type="number" class="form-control input-sm" ng-model='account.initialBalance'>
+                        </td>
+                    </tr>
+                    <tr>
+                    <td>Forecast balance</td>
+                    <td ng-class="forecastBalance < 0 ? 'text-danger' : 'text-success'" >{{forecastBalance | currency:'€'}}</td>
+                    </tr>
+                    <tr>
+                    <td>Current balance</td>
+                    <td ng-class="balance < 0 ? 'text-danger' : 'text-success'" >{{balance | currency:'€'}}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                    <td ng-class="operation.amount < 0 ? 'danger' : 'success' ">
-                    </td>
-                    <td>
-                        <input type="checkbox" ng-model='operation.selected' ng-change='updateSelected(false, operation.selected)'>
-                    </td>
-                    <td ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)">
-                        {{operation.created | date:"dd/MM/yyyy"}}
-                    </td>
-                    <td ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)">
-                        {{operation.name}}
-                    </td>
-                    <td ng-class="operation.amount < 0 ? 'text-danger' : 'text-success'" ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)" style="text-align:right">
-                        {{operation.amount | currency:'€' }}
-                    </td>
-                    <td class="text-center" ng-class=" !operation.checked ? 'warning' : 'default' " ng-click="operation.checked = !operation.checked ;update(operation);">
-                        <input type="checkbox" ng-model='operation.checked' ng-click='update(operation)'>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+
+
+
+                <button class="btn" ng-click="startNewOperation()" ng-disabled="newOperationIsInProgress">New operation</button>
+                <button ng-disabled='selectedOperationsCount <= 0' ng-click='checkSelected()' class="btn btn-success">
+                    Check <span ng-show="selectedOperationsCount>0">{{selectedOperationsCount}}</span><ng-pluralize count="selectedOperationsCount"
+                        when="{
+                            '0'    : ' operation',
+                            'one'  : ' operation',
+                            'other': ' operations'
+                        }"></ng-pluralize>
+                </button>
+                <button ng-disabled='selectedOperationsCount <= 0' ng-click='uncheckSelected()' class="btn btn-warning">
+                    Uncheck <span ng-show="selectedOperationsCount>0">{{selectedOperationsCount}}</span><ng-pluralize count="selectedOperationsCount"
+                        when="{
+                            '0'    : ' operation',
+                            'one'  : ' operation',
+                            'other': ' operations'
+                        }"></ng-pluralize></button>
+                <button ng-disabled='selectedOperationsCount <= 0' ng-click='deleteSelected()' class="btn btn-danger">
+                    Delete <span ng-show="selectedOperationsCount>0">{{selectedOperationsCount}}</span><ng-pluralize count="selectedOperationsCount"
+                        when="{
+                            '0'    : ' operation',
+                            'one'  : ' operation',
+                            'other': ' operations'
+                        }"></ng-pluralize></button>
+
+                </div>
+            </div>
+
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 10px;"> </th>
+                            <th style="width: 10px;"><input type="checkbox" ng-model='allSelected' ng-change='updateSelected(true, false)'></th>
+                            <th style="width: 10px;">Date</th>
+                            <th>Label</th>
+                            <th>Amount</th>
+                            <th style="width: 40px;">Checked</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-show="newOperationIsInProgress">
+                            <td ng-class="newOperation.amount < 0 ? 'danger' : 'success' "></td>
+                            <td><button ng-click='postNewOperation()' class="btn btn-sm btn-primary">+</button></td>
+                            <td><input class="form-control input-sm" ng-model="newOperation.created" type="date"></td>
+                            <td><input class="form-control input-sm" ng-model="newOperation.name"    type="text"></td>
+                            <td ng-class="newOperation.amount < 0 ? 'text-danger' : 'text-success'" ><input class="form-control input-sm" ng-model="newOperation.amount"  type="number"></td>
+                            <td class="text-center" ng-class=" !newOperation.checked ? 'warning' : 'default' " ><input ng-model="newOperation.checked" type="checkbox"></td>
+                        </tr>
+                        <tr ng-repeat="operation in account.operations | orderBy:'-created'" >
+
+                            <td ng-class="operation.amount < 0 ? 'danger' : 'success' ">
+                            </td>
+                            <td>
+                                <input type="checkbox" ng-model='operation.selected' ng-change='updateSelected(false, operation.selected)'>
+                            </td>
+                            <td ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)">
+                                {{operation.created | date:"dd/MM/yyyy"}}
+                            </td>
+                            <td ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)">
+                                {{operation.name}}
+                            </td>
+                            <td ng-class="operation.amount < 0 ? 'text-danger' : 'text-success'" ng-click="operation.selected = !operation.selected; updateSelected(false, operation.selected)" style="text-align:right">
+                                {{operation.amount | currency:'€' }}
+                            </td>
+                            <td class="text-center" ng-class=" !operation.checked ? 'warning' : 'default' " ng-click="operation.checked = !operation.checked ;update(operation);">
+                                <input type="checkbox" ng-model='operation.checked' ng-click='update(operation)'>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>

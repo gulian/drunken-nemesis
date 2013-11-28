@@ -1,4 +1,4 @@
-angular.module('drunkennemesis').controller('accountDetailsController', function ($scope, $routeParams, Account, Operation){
+angular.module('drunkennemesis').controller('accountDetailsController', function ($scope, $routeParams, Account, Operation, $location){
 
     $scope.selectedOperationsCount = 0;
 
@@ -56,6 +56,16 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
         Operation.put(operation);
         $scope.processBalance();
         $scope.processForecastBalance();
+    };
+
+    $scope._delete = function ($event) {
+        $event.preventDefault();
+        Account.delete({
+            accountId : $scope.account._id
+        }, function(){
+            $location.path('/accounts') ;
+        });
+        return false;
     };
 
     $scope.updateSelected = function(all, newState, $event){
