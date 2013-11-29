@@ -2,7 +2,27 @@
     <div class="row">
 
         <div  class="col-xs-6 col-sm-3" id="sidebar" role="navigation" ng-controller="accountsController">
-            <h4>Accounts <button class='btn btn-default btn-xs' ng-click="newAccount()">+</button></h4>
+            <h4>Accounts
+                <button
+                    class ='btn btn-default btn-xs pull-right'
+                    ng-show ="!newAccountFormIsVisible"
+                    ng-click ="newAccountFormIsVisible = true">
+                    <span class="caret"></span>
+                </button>
+                <button
+                    type ="button"
+                    class ="close pull-right"
+                    ng-show ="newAccountFormIsVisible"
+                    ng-click ="newAccountFormIsVisible = false">
+                    &times;
+                </button>
+            </h4>
+            <ul ng-show="newAccountFormIsVisible" class="nav nav-stacked">
+                <li><input ng-model="newAccount.name" class="form-control input-sm" placeholder="Name" type="text"></li>
+                <li><input ng-model="newAccount.bank" class="form-control input-sm" placeholder="Bank" type="text"></li>
+                <li><input ng-model="newAccount.initialBalance" class="form-control input-sm" placeholder="Initial balance" type="number"></li>
+                <li><button ng-click="sendNewAccount()" class="btn btn-success btn-xs pull-right">OK</button></li>
+            </ul>
             <ul class="nav nav-stacked">
                 <li class="active" ng-repeat="account in accounts">
                     <a ng-href='#/accounts/{{account._id}}'>

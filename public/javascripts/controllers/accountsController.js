@@ -1,12 +1,20 @@
 angular.module('drunkennemesis').controller('accountsController', function ($scope, Account){
 
     $scope.accounts = Account.query() ;
-
-    $scope.newAccount = function(){
-        var _account = {name:'Compte courant', bank:'SG', initialBalance: Math.floor(Math.random()*100)};
-        Account.post(_account, function(account){
+    $scope.newAccount = {} ;
+    $scope.sendNewAccount = function(){
+        if(!$scope.newAccount.name.trim().length){
+            $scope.newAccountMessage = "Name is required" ;
+             return false ;
+        }
+        if(!$scope.newAccount.initialBalance) {
+            $scope.newAccount.initialBalance = 0 ;
+        }
+        Account.post($scope.newAccount, function(account){
             $scope.accounts.push(account);
         });
+        $scope.newAccount = {} ;
+        $scope.newAccountFormIsVisible = false ;
     };
 
 });
