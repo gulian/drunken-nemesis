@@ -2,7 +2,7 @@
     <div class="row">
 
         <div  class="col-xs-6 col-sm-3" id="sidebar" role="navigation" ng-controller="accountsController">
-            <h4>Accounts</h4>
+            <h4>Accounts <button class='btn btn-default btn-xs' ng-click="newAccount()">+</button></h4>
             <ul class="nav nav-stacked">
                 <li class="active" ng-repeat="account in accounts">
                     <a ng-href='#/accounts/{{account._id}}'>
@@ -10,7 +10,7 @@
                     </a>
                 </li>
             </ul>
-            <button class='btn btn-default btn-block' ng-click="newAccount()">+</button>
+
         </div>
 
         <div  class="col-xs-12 col-sm-9" ng-controller='accountDetailsController'>
