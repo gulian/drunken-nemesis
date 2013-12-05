@@ -41,7 +41,7 @@ angular.module('drunkennemesis').controller('accountDetailsController', function
             $scope.processBalance();
             $scope.processForecastBalance();
         });
-        $scope.selectedOperationsCount--;
+        // $scope.selectedOperationsCount--;
         $scope.allSelected = false ;
         $scope.newOperationIsInProgress = false ;
     };
