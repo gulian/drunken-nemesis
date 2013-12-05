@@ -1,8 +1,42 @@
 <div class="container">
-    <div class="row">
+    <div class="row" ng-controller='accountDetailsController'>
 
-        <div  class="col-xs-6 col-sm-3" id="sidebar" role="navigation" ng-controller="accountsController">
-            <h4>Accounts
+        <div  class="col-xs-6 col-sm-3" id="sidebar" role="navigation">
+
+          <h2>{{account.name}}  <small>{{account.bank}} </small><div class="btn-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <!-- <li><a href="#">Save locally<a></li> -->
+                    <li><a ng-click="_delete($event)" href="#">Delete account</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">User settings</a></li>
+                </ul>
+            </div></h2>
+
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>Initial balance <button ng-show='editingInitialBalance' class="btn btn-sm btn-success pull-right" ng-click='editingInitialBalance = false ; saveAccount()'>Save</button></td>
+                        <td ng-class="account.initialBalance < 0 ? 'text-danger' : 'text-success'" ng-dblclick="editingInitialBalance = true" ng-show='!editingInitialBalance'>
+                            {{account.initialBalance | currency:'€'}}
+                        </td>
+                        <td ng-dblclick="editingInitialBalance = true" ng-show='editingInitialBalance'>
+                            <input type="number" class="form-control input-sm" ng-model='account.initialBalance'>
+                        </td>
+                    </tr>
+                    <tr>
+                    <td>Forecast balance</td>
+                    <td ng-class="forecastBalance < 0 ? 'text-danger' : 'text-success'" >{{forecastBalance | currency:'€'}}</td>
+                    </tr>
+                    <tr>
+                    <td>Current balance</td>
+                    <td ng-class="balance < 0 ? 'text-danger' : 'text-success'" >{{balance | currency:'€'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- <h4>Accounts
                 <button
                     class ='btn btn-default btn-xs pull-right'
                     ng-show ="!newAccountFormIsVisible"
@@ -30,45 +64,12 @@
                     </a>
                 </li>
             </ul>
-
+ -->
         </div>
 
-        <div  class="col-xs-12 col-sm-9" ng-controller='accountDetailsController'>
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">
-                    Settings <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <!-- <li><a href="#">Save locally<a></li> -->
-                    <li><a ng-click="_delete($event)" href="#">Delete account</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">User settings</a></li>
-                </ul>
-            </div>
+        <div  class="col-xs-12 col-sm-9" >
 
-            <h2>{{account.name}}  <small>{{account.bank}} </small></h2>
 
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>Initial balance <button ng-show='editingInitialBalance' class="btn btn-sm btn-success pull-right" ng-click='editingInitialBalance = false ; saveAccount()'>Save</button></td>
-                        <td ng-class="account.initialBalance < 0 ? 'text-danger' : 'text-success'" ng-dblclick="editingInitialBalance = true" ng-show='!editingInitialBalance'>
-                            {{account.initialBalance | currency:'€'}}
-                        </td>
-                        <td ng-dblclick="editingInitialBalance = true" ng-show='editingInitialBalance'>
-                            <input type="number" class="form-control input-sm" ng-model='account.initialBalance'>
-                        </td>
-                    </tr>
-                    <tr>
-                    <td>Forecast balance</td>
-                    <td ng-class="forecastBalance < 0 ? 'text-danger' : 'text-success'" >{{forecastBalance | currency:'€'}}</td>
-                    </tr>
-                    <tr>
-                    <td>Current balance</td>
-                    <td ng-class="balance < 0 ? 'text-danger' : 'text-success'" >{{balance | currency:'€'}}</td>
-                    </tr>
-                </tbody>
-            </table>
 
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group">
